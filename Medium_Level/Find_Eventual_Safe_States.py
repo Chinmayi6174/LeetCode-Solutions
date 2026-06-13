@@ -24,3 +24,28 @@ class Solution:
             if safe[i]:
                 res.append(i)
         return res
+
+
+#another approach
+class Solution:
+    def eventualSafeNodes(self, graph: List[List[int]]) -> List[int]:
+        n = len(graph)
+        vis = [0] * n
+        pathVis = [0] * n
+        safe = [0] * n
+        def dfs(node):
+            vis[node] = 1
+            pathVis[node] = 1
+            for nei in graph[node]:
+                if vis[nei] == 0:
+                    if dfs(nei):
+                        return True
+                elif pathVis[nei]:
+                    return True
+            pathVis[node] = 0
+            safe[node] = 1
+            return False
+        for i in range(n):
+            if vis[i] == 0:
+                dfs(i)
+        return [i for i in range(n) if safe[i]]
